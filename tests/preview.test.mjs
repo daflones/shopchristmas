@@ -70,6 +70,16 @@ test("as avaliações cadastradas são reais, completas e com mídia acessível"
   }
 });
 
+test("o painel admin existe e não expõe credenciais no frontend", async () => {
+  for (const file of ["../index.html", "../admin.html", "../admin.mjs", "../app.mjs", "../catalog.mjs", "../site-config.mjs"]) {
+    const source = await readFile(new URL(file, import.meta.url), "utf8");
+    assert.doesNotMatch(source, /Ganjahman|ADMIN_PASSWORD/, `credencial exposta em ${file}`);
+  }
+  const admin = await readFile(new URL("../admin.mjs", import.meta.url), "utf8");
+  assert.match(admin, /sc-admin/);
+  assert.match(admin, /action:\s*"login"/);
+});
+
 test("o servidor só entrega arquivos públicos e rejeita escritas", async (t) => {
   const server = createPreviewServer();
   server.listen(0, "127.0.0.1");

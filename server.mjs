@@ -11,6 +11,8 @@ const files = new Map([
   ["/site-config.mjs", ["site-config.mjs", "text/javascript; charset=utf-8"]],
   ["/pedido.html", ["pedido.html", "text/html; charset=utf-8"]],
   ["/pedido.mjs", ["pedido.mjs", "text/javascript; charset=utf-8"]],
+  ["/jkhsjadmin", ["admin.html", "text/html; charset=utf-8"]],
+  ["/admin.mjs", ["admin.mjs", "text/javascript; charset=utf-8"]],
   ["/assets/trees.webp", ["assets/trees.webp", "image/webp"]],
   ["/assets/campaign.webp", ["assets/campaign.webp", "image/webp"]],
   ["/assets/pix-garantia.webp", ["assets/pix-garantia.webp", "image/webp"]],

@@ -8,3 +8,6 @@ verify_jwt = false
 
 [functions.sc-order-status]
 verify_jwt = false
+
+[functions.sc-admin]
+verify_jwt = false

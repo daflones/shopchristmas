@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#111511">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/png" href="/assets/favicon.png">
+    <link rel="stylesheet" href="/styles.css">
+    <title>Painel — ShopChristmas</title>
+  </head>
+  <body class="admin-body">
+    <main class="admin-wrap">
+      <section id="admin-login" class="admin-login">
+        <div class="admin-login-card">
+          <span class="eyebrow">SHOPCHRISTMAS</span>
+          <h1>Painel administrativo</h1>
+          <p class="admin-login-sub">Acesso restrito à gestão da loja.</p>
+          <form id="login-form" class="checkout-fields">
+            <label>E-mail<input type="email" name="email" autocomplete="username" required maxlength="200"></label>
+            <label>Senha<input type="password" name="password" autocomplete="current-password" required maxlength="200"></label>
+            <p id="login-error" class="form-error" hidden></p>
+            <button type="submit" id="login-submit" class="button primary">ENTRAR</button>
+          </form>
+        </div>
+      </section>
+
+      <section id="admin-app" hidden>
+        <header class="admin-header">
+          <div class="admin-brand"><svg class="brand-tree" viewBox="0 0 40 48" fill="none" aria-hidden="true"><path d="M20 3 9 18h7L5 31h10L3 41h34L25 31h10L24 18h7L20 3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M20 41v6" stroke="currentColor" stroke-width="2"/></svg><div><strong>ShopChristmas</strong><small>painel admin</small></div></div>
+          <button id="admin-logout" class="admin-logout" type="button">Sair</button>
+        </header>
+
+        <div class="kpi-grid" id="kpi-grid"></div>
+
+        <nav class="admin-tabs" id="admin-tabs">
+          <button class="admin-tab is-active" data-tab="orders" type="button">Pedidos</button>
+          <button class="admin-tab" data-tab="attempts" type="button">Tentativas PIX</button>
+          <button class="admin-tab" data-tab="events" type="button">Eventos webhook</button>
+        </nav>
+
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead id="table-head"></thead>
+            <tbody id="table-body"><tr><td class="admin-loading" colspan="8">Carregando…</td></tr></tbody>
+          </table>
+        </div>
+        <div class="admin-pager">
+          <span id="pager-info"></span>
+          <div><button id="pager-prev" type="button">‹ Anterior</button><button id="pager-next" type="button">Próxima ›</button></div>
+        </div>
+      </section>
+    </main>
+
+    <dialog id="order-dialog" class="admin-dialog">
+      <div class="dialog-header"><span class="eyebrow">DETALHES DO PEDIDO</span><button class="close-button" data-close aria-label="Fechar detalhes">×</button></div>
+      <div id="order-detail"></div>
+    </dialog>
+    <script type="module" src="/admin.mjs"></script>
+  </body>
+</html>
