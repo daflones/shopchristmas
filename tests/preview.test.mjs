@@ -25,22 +25,25 @@ test("a moeda usa formato brasileiro e rejeita valores inválidos", () => {
   for (const value of [-1, 1.5, NaN, Infinity, "10997"]) assert.throws(() => money(value), TypeError);
 });
 
-test("o checkout é demonstrativo e não possui formulário de envio", async () => {
+test("o checkout é PIX-only e não contém campos de cartão", async () => {
   const html = await readFile(new URL("../index.html", import.meta.url), "utf8");
-  assert.match(html, /PRÉVIA DEMONSTRATIVA/);
-  assert.match(html, /disabled>Pagamento em configuração/);
-  assert.match(html, /Pagamento via PIX/);
+  assert.match(html, /CHECKOUT SEGURO/);
+  assert.match(html, /<form id="customer-form"/);
+  assert.match(html, /name="email"[^>]+required/);
+  assert.match(html, /id="submit-order"[^>]*>GERAR PIX/);
   assert.match(html, /pix-garantia\.webp/);
-  assert.doesNotMatch(html, /data-method=|card-panel|Cartão de crédito/);
-  assert.doesNotMatch(html, /<form\b/i);
-  assert.doesNotMatch(html, /<input[^>]+name=/i);
+  assert.doesNotMatch(html, /data-method=|card-panel|Cartão de crédito|cvv|cvc|numero do cartão/i);
   assert.match(html, /Imagem ilustrativa/);
 });
 
-test("a prévia não inclui chamadas financeiras, rastreadores ou persistência", async () => {
+test("o app só chama as Edge Functions sc-* e não persiste dados", async () => {
   const source = await readFile(new URL("../app.mjs", import.meta.url), "utf8");
-  assert.doesNotMatch(source, /\b(fetch|XMLHttpRequest|WebSocket|localStorage|sessionStorage|sendBeacon)\b/);
+  assert.match(source, /sc-create-order/);
+  assert.match(source, /sc-order-status/);
+  assert.doesNotMatch(source, /localStorage|sessionStorage|sendBeacon|XMLHttpRequest|WebSocket/);
   assert.doesNotMatch(source, /document\.cookie|innerHTML/);
+  const fetches = source.match(/fetch\([^)]+\)/g) ?? [];
+  assert.ok(fetches.every((call) => call.includes("FUNCTIONS_URL")));
 });
 
 test("o servidor só entrega arquivos públicos e rejeita escritas", async (t) => {
@@ -49,10 +52,10 @@ test("o servidor só entrega arquivos públicos e rejeita escritas", async (t) =
   await once(server, "listening");
   t.after(() => new Promise((resolve, reject) => server.close((error) => error ? reject(error) : resolve())));
   const origin = `http://127.0.0.1:${server.address().port}`;
-  for (const path of ["/", "/app.mjs", "/catalog.mjs", "/styles.css", "/assets/trees.webp"]) {
+  for (const path of ["/", "/app.mjs", "/catalog.mjs", "/site-config.mjs", "/styles.css", "/assets/trees.webp", "/pedido.html", "/pedido.mjs", "/assets/pix-garantia.webp"]) {
     const response = await fetch(origin + path);
     assert.equal(response.status, 200);
-    assert.match(response.headers.get("content-security-policy"), /connect-src 'none'/);
+    assert.match(response.headers.get("content-security-policy"), /connect-src 'self' https:\/\/qiavgoutaxfaldsgggly\.supabase\.co/);
     await response.arrayBuffer();
   }
   for (const path of ["/.env", "/package.json", "/server.mjs", "/api/pay", "/%2e%2e/package.json"]) {

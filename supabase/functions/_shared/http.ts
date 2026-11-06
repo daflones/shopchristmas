@@ -2,7 +2,7 @@ export class ApiError extends Error {
   constructor(public status: number, public code: string, message: string) { super(message) }
 }
 
-const ALLOWED_ORIGIN = Deno.env.get('SITE_URL') ?? '*'
+const ALLOWED_ORIGIN = Deno.env.get('SHOPCHRISTMAS_SITE_URL') ?? Deno.env.get('SITE_URL') ?? '*'
 
 export function json(data: unknown, status = 200, extraHeaders: Record<string, string> = {}) {
   return new Response(JSON.stringify(data), {

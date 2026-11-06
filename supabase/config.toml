@@ -1,10 +1,10 @@
-project_id = "shopchristmas"
+project_id = "qiavgoutaxfaldsgggly"
 
-[functions.create-order]
+[functions.sc-create-order]
 verify_jwt = false
 
-[functions.mercosulpay-webhook]
+[functions.sc-mercosulpay-webhook]
 verify_jwt = false
 
-[functions.order-status]
+[functions.sc-order-status]
 verify_jwt = false

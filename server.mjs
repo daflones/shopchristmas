@@ -8,6 +8,9 @@ const files = new Map([
   ["/styles.css", ["styles.css", "text/css; charset=utf-8"]],
   ["/app.mjs", ["app.mjs", "text/javascript; charset=utf-8"]],
   ["/catalog.mjs", ["catalog.mjs", "text/javascript; charset=utf-8"]],
+  ["/site-config.mjs", ["site-config.mjs", "text/javascript; charset=utf-8"]],
+  ["/pedido.html", ["pedido.html", "text/html; charset=utf-8"]],
+  ["/pedido.mjs", ["pedido.mjs", "text/javascript; charset=utf-8"]],
   ["/assets/trees.webp", ["assets/trees.webp", "image/webp"]],
   ["/assets/campaign.webp", ["assets/campaign.webp", "image/webp"]],
   ["/assets/pix-garantia.webp", ["assets/pix-garantia.webp", "image/webp"]]
@@ -19,7 +22,7 @@ export function createPreviewServer() {
     response.setHeader("Referrer-Policy", "no-referrer");
     response.setHeader("X-Frame-Options", "DENY");
     response.setHeader("Cache-Control", "no-store");
-    response.setHeader("Content-Security-Policy", "default-src 'self'; img-src 'self'; style-src 'self'; script-src 'self'; connect-src 'none'; form-action 'none'; frame-ancestors 'none'; base-uri 'none'");
+    response.setHeader("Content-Security-Policy", "default-src 'self'; img-src 'self' data: https:; style-src 'self'; script-src 'self'; connect-src 'self' https://qiavgoutaxfaldsgggly.supabase.co; form-action 'none'; frame-ancestors 'none'; base-uri 'none'");
     if (request.method !== "GET" && request.method !== "HEAD") {
       response.writeHead(405, { Allow: "GET, HEAD" }).end();
       return;

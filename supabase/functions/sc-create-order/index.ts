@@ -47,7 +47,7 @@ Deno.serve(async (req) => {
 
     const orderId: string = result.order_id
     const total: number = result.total_cents
-    const siteUrl = (Deno.env.get('SITE_URL') ?? 'http://localhost:3000').replace(/\/$/, '')
+    const siteUrl = (Deno.env.get('SHOPCHRISTMAS_SITE_URL') ?? 'https://shopchristmas.com.br').replace(/\/$/, '')
     const orderUrl = `${siteUrl}/pedido.html?id=${orderId}&t=${result.access_token}`
 
     // Pedido já existente (retry/duplo clique): devolve a tentativa atual sem nova cobrança.

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#111511">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Acompanhar pedido — ShopChristmas</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script type="module" src="/pedido.mjs"></script>
+  </head>
+  <body>
+    <main class="order-page container">
+      <a class="brand" href="/">Shop<span class="brand-gold">Christmas</span></a>
+      <div class="order-card">
+        <p class="eyebrow">ACOMPANHAMENTO DO PEDIDO</p>
+        <h1 class="order-title">Seu pedido</h1>
+        <p id="order-error" class="form-error" hidden></p>
+        <div id="order-info" hidden>
+          <p class="order-number">Pedido <strong id="order-number"></strong></p>
+          <p id="order-status" class="pix-status"></p>
+          <dl class="pix-price order-total"><div class="pix-total"><dt>Total</dt><dd id="order-total"></dd></div></dl>
+          <div id="order-pix" hidden>
+            <img id="order-qr" class="pix-qr" alt="QR Code PIX para pagamento" hidden>
+            <label class="pix-code-label" hidden>Código PIX copia e cola<textarea id="order-code" readonly rows="4"></textarea></label>
+            <button type="button" id="order-copy" class="copy-button">Copiar código PIX</button>
+          </div>
+          <p class="order-hint">Esta página atualiza automaticamente o status do seu pagamento.</p>
+        </div>
+        <a class="track-link back-link" href="/">← Voltar para a loja</a>
+      </div>
+    </main>
+    <noscript><div class="noscript-message">Habilite JavaScript para acompanhar o pedido.</div></noscript>
+  </body>
+</html>
