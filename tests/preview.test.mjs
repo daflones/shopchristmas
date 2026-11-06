@@ -43,7 +43,8 @@ test("o app só chama as Edge Functions sc-* e não persiste dados", async () =>
   assert.doesNotMatch(source, /localStorage|sessionStorage|sendBeacon|XMLHttpRequest|WebSocket/);
   assert.doesNotMatch(source, /document\.cookie|innerHTML/);
   const fetches = source.match(/fetch\([^)]+\)/g) ?? [];
-  assert.ok(fetches.every((call) => call.includes("FUNCTIONS_URL")));
+  assert.ok(fetches.every((call) => call.includes("FUNCTIONS_URL") || call.includes("viacep.com.br")));
+  assert.match(source, /viacep\.com\.br\/ws\/\$\{digits\}\/json\//, "consulta de CEP pelo ViaCEP");
 });
 
 test("as avaliações cadastradas são reais, completas e com mídia acessível", async (t) => {

@@ -39,7 +39,7 @@ export function createPreviewServer() {
     response.setHeader("Referrer-Policy", "no-referrer");
     response.setHeader("X-Frame-Options", "DENY");
     response.setHeader("Cache-Control", "no-store");
-    response.setHeader("Content-Security-Policy", "default-src 'self'; img-src 'self' data: https:; style-src 'self'; script-src 'self'; connect-src 'self' https://qiavgoutaxfaldsgggly.supabase.co; form-action 'none'; frame-ancestors 'none'; base-uri 'none'");
+    response.setHeader("Content-Security-Policy", "default-src 'self'; img-src 'self' data: https:; style-src 'self'; script-src 'self'; connect-src 'self' https://qiavgoutaxfaldsgggly.supabase.co https://viacep.com.br; form-action 'none'; frame-ancestors 'none'; base-uri 'none'");
     if (request.method !== "GET" && request.method !== "HEAD") {
       response.writeHead(405, { Allow: "GET, HEAD" }).end();
       return;

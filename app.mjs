@@ -258,6 +258,27 @@ const pixCode = document.querySelector("#pix-code");
 const pixCopy = document.querySelector("#pix-copy");
 const pixTrack = document.querySelector("#pix-track");
 
+// ---------- preenchimento automático de endereço pelo CEP (ViaCEP) ----------
+const zipInput = form.elements.zip;
+let zipFetchId = 0;
+zipInput.addEventListener("input", async () => {
+  const digits = zipInput.value.replace(/\D/g, "").slice(0, 8);
+  zipInput.value = digits.length > 5 ? `${digits.slice(0, 5)}-${digits.slice(5)}` : digits;
+  if (digits.length !== 8) return;
+  const requestId = ++zipFetchId;
+  try {
+    const res = await fetch(`https://viacep.com.br/ws/${digits}/json/`);
+    if (!res.ok || requestId !== zipFetchId) return;
+    const data = await res.json();
+    if (data.erro || requestId !== zipFetchId) return;
+    if (data.logradouro) form.elements.line1.value = data.logradouro;
+    if (data.bairro) form.elements.district.value = data.bairro;
+    if (data.localidade) form.elements.city.value = data.localidade;
+    if (data.uf) form.elements.state.value = data.uf;
+    if (data.logradouro) form.elements.number.focus();
+  } catch { /* sem conexão — o usuário preenche manualmente */ }
+});
+
 const utm = {};
 for (const [key, value] of new URLSearchParams(location.search)) {
   if (/^(utm_|fbclid|gclid)/.test(key)) utm[key] = value.slice(0, 120);
