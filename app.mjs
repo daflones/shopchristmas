@@ -250,7 +250,6 @@ document.querySelectorAll("[data-policy]").forEach((button) => {
 const form = document.querySelector("#customer-form");
 const submitButton = document.querySelector("#submit-order");
 const formError = document.querySelector("#form-error");
-const pixIntro = document.querySelector("#pix-intro");
 const pixLive = document.querySelector("#pix-live");
 const pixStatus = document.querySelector("#pix-status");
 const pixQrImg = document.querySelector("#pix-qr-img");
@@ -297,10 +296,10 @@ const STATUS_TEXT = {
 };
 
 function setPixState(order) {
-  pixIntro.hidden = true;
   pixLive.hidden = false;
-  pixStatus.textContent = STATUS_TEXT[order.status] ?? `Status: ${order.status}`;
-  pixStatus.dataset.state = order.status;
+  const status = order.status ?? "pending_payment";
+  pixStatus.textContent = STATUS_TEXT[status] ?? `Status: ${status}`;
+  pixStatus.dataset.state = status;
   if (order.payment?.qr_code_image) {
     pixQrImg.src = order.payment.qr_code_image;
     pixQrImg.hidden = false;
@@ -309,8 +308,9 @@ function setPixState(order) {
     pixCode.value = order.payment.qr_code;
     pixCode.parentElement.hidden = false;
   }
-  if (order.order_url) pixTrack.href = order.order_url;
-  if (["paid", "processing"].includes(order.status)) {
+  const orderUrl = order.order_url ?? order.payment?.order_url;
+  if (orderUrl) pixTrack.href = orderUrl;
+  if (["paid", "processing"].includes(status)) {
     pixStatus.classList.add("is-paid");
     clearInterval(pollTimer);
   }

@@ -1,4 +1,4 @@
-import { cors, errorResponse, json, ApiError, str } from '../_shared/http.ts'
+import { cors, errorResponse, json, ApiError, str, allowOrigin } from '../_shared/http.ts'
 import { serviceClient } from '../_shared/db.ts'
 import { createCharge } from '../_shared/mercosulpay.ts'
 
@@ -9,6 +9,7 @@ import { createCharge } from '../_shared/mercosulpay.ts'
  */
 Deno.serve(async (req) => {
   const pre = cors(req); if (pre) return pre
+  const O = allowOrigin(req)
   try {
     if (req.method !== 'POST') throw new ApiError(405, 'METHOD', 'Método inválido.')
     const b = await req.json().catch(() => ({}))
@@ -61,7 +62,7 @@ Deno.serve(async (req) => {
         number: order?.number, total_cents: att?.amount_cents ?? order?.total_cents,
         duplicated: true,
         payment: { method: 'pix', status: att?.status ?? 'pending', qr_code: att?.qr_code, qr_code_image: att?.qr_code_image, order_url: orderUrl },
-      })
+      }, 200, O)
     }
 
     const { data: order } = await db.from('sc_orders').select('number').eq('id', orderId).single()
@@ -76,6 +77,6 @@ Deno.serve(async (req) => {
       ok: true, order_id: orderId, access_token: result.access_token,
       number: order?.number, total_cents: total, duplicated: false,
       payment: { method: 'pix', status: 'pending', qr_code: charge.qrCode, qr_code_image: charge.qrCodeImage, order_url: orderUrl },
-    })
-  } catch (e) { return errorResponse(e) }
+    }, 200, O)
+  } catch (e) { return errorResponse(e, O) }
 })

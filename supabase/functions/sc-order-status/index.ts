@@ -1,4 +1,4 @@
-import { cors, errorResponse, json, ApiError } from '../_shared/http.ts'
+import { cors, errorResponse, json, ApiError, allowOrigin } from '../_shared/http.ts'
 import { serviceClient } from '../_shared/db.ts'
 import { getCharge } from '../_shared/mercosulpay.ts'
 
@@ -9,6 +9,7 @@ import { getCharge } from '../_shared/mercosulpay.ts'
  */
 Deno.serve(async (req) => {
   const pre = cors(req); if (pre) return pre
+  const O = allowOrigin(req)
   try {
     const url = new URL(req.url)
     const id = url.searchParams.get('id') ?? ''
@@ -50,6 +51,6 @@ Deno.serve(async (req) => {
       ok: true, number: data.number, status: data.status,
       total_cents: data.total_cents, currency: data.currency,
       payment: att ? { status: att.status, qr_code: att.qr_code, qr_code_image: att.qr_code_image } : null,
-    })
-  } catch (e) { return errorResponse(e) }
+    }, 200, O)
+  } catch (e) { return errorResponse(e, O) }
 })
