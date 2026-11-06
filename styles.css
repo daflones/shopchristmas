@@ -14,3 +14,5 @@
   bottom: 110px;
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important;animation:none!important}.button.primary:not(:disabled):hover{transform:none}}
+
+@media(max-width:600px){.kit-art{height:430px}.kit-thumb{width:64px;height:64px}}

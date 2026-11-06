@@ -48,7 +48,7 @@ const policies = {
   privacy: {
     title: "Privacidade",
     paragraphs: [
-      "Para concluir o pedido coletamos nome, e-mail, telefone e endereço de entrega. Esses dados são usados exclusivamente para processar a compra, emitir a cobrança PIX via MercosulPay e realizar a entrega.",
+      "Para concluir o pedido coletamos nome, e-mail, telefone e endereço de entrega. Esses dados são usados exclusivamente para processar a compra, emitir a cobrança PIX e realizar a entrega.",
       "Não solicitamos nem armazenamos dados de cartão. O pagamento é confirmado diretamente pelo provedor e registramos apenas o status da transação.",
       "Identificação do controlador dos dados, canais de contato e prazos de retenção serão informados pela loja antes da operação definitiva, conforme a LGPD."
     ]
@@ -202,9 +202,9 @@ if (store.reviews.length) {
 
 // ---------- galeria de fotos reais do produto ----------
 const productGallery = [
-  { type: "image", src: "/assets/produto-main.webp", alt: "Árvore de Natal de 1,80 m com 650 galhos — foto real do produto." },
-  { type: "image", src: "/assets/produto-detalhes.webp", alt: "Detalhes da árvore: galhos flexíveis e fáceis de modelar, base metálica resistente." },
-  { type: "image", src: "/assets/produto-montagem.webp", alt: "Montagem em 4 passos: encaixe a base, monte as seções, abra os galhos e a árvore está pronta." }
+  { type: "image", src: "/assets/produto-main.webp", fit: "cover", alt: "Árvore de Natal de 1,80 m com 650 galhos — foto real do produto." },
+  { type: "image", src: "/assets/produto-detalhes.webp", fit: "cover", alt: "Detalhes da árvore: galhos flexíveis e fáceis de modelar, base metálica resistente." },
+  { type: "image", src: "/assets/produto-montagem.webp", fit: "contain", alt: "Montagem em 4 passos: encaixe a base, monte as seções, abra os galhos e a árvore está pronta." }
 ];
 const kitArtImg = document.querySelector("#kit-art-img");
 const kitThumbs = document.querySelector("#kit-thumbs");
@@ -224,6 +224,7 @@ if (kitArtImg && kitThumbs) {
       activeIndex = index;
       kitArtImg.src = item.src;
       kitArtImg.alt = item.alt;
+      kitArtImg.style.objectFit = item.fit ?? "cover";
       kitThumbs.querySelectorAll(".kit-thumb").forEach((el, i) => el.classList.toggle("is-active", i === index));
     });
     kitThumbs.append(thumb);
@@ -245,7 +246,7 @@ document.querySelectorAll("[data-policy]").forEach((button) => {
   });
 });
 
-// ---------- checkout PIX (MercosulPay via Supabase Edge Functions) ----------
+// ---------- checkout PIX (Supabase Edge Functions) ----------
 const form = document.querySelector("#customer-form");
 const submitButton = document.querySelector("#submit-order");
 const formError = document.querySelector("#form-error");
