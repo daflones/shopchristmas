@@ -1,0 +1,10 @@
+project_id = "shopchristmas"
+
+[functions.create-order]
+verify_jwt = false
+
+[functions.mercosulpay-webhook]
+verify_jwt = false
+
+[functions.order-status]
+verify_jwt = false

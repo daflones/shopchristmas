@@ -1,0 +1,11 @@
+.git
+.gitignore
+.cache
+.env
+.env.*
+tests
+supabase
+node_modules
+Dockerfile
+.dockerignore
+AGENTS.md
