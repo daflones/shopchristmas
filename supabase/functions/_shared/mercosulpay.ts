@@ -74,7 +74,9 @@ function timingSafeEqual(a: string, b: string): boolean {
 }
 
 export async function verifyWebhook(headers: Headers, rawBody: string) {
-  const secret = requireEnv('MERCOSULPAY_WEBHOOK_SECRET')
+  // Secret dedicado da ShopChristmas; fallback para o compartilhado do projeto.
+  const secret = Deno.env.get('SHOPCHRISTMAS_MERCOSULPAY_WEBHOOK_SECRET')
+    ?? requireEnv('MERCOSULPAY_WEBHOOK_SECRET')
   const ts = headers.get('x-mercosulpay-timestamp') ?? ''
   const sig = headers.get('x-mercosulpay-signature') ?? ''
   if (!ts || Math.abs(Date.now() / 1000 - Number(ts)) > 300) throw new ApiError(401, 'STALE_DELIVERY', 'Entrega expirada.')
