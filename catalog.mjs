@@ -15,6 +15,8 @@ export const store = Object.freeze({
   }),
   shipping: Object.freeze({ priceCents: 0, calendarDays: 7, coverage: "todo o Brasil" }),
   returns: Object.freeze({ daysAfterPurchase: 30 }),
+  // Avaliações reais de clientes — preencher apenas com depoimentos verificáveis.
+  reviews: Object.freeze([]),
   preview: true
 });
 

@@ -71,6 +71,31 @@ const policies = {
   }
 };
 
+// ---------- avaliações (somente depoimentos reais cadastrados no catálogo) ----------
+const reviewsGrid = document.querySelector("#reviews-grid");
+if (store.reviews.length) {
+  for (const review of store.reviews) {
+    const card = document.createElement("article");
+    card.className = "review-card";
+    const stars = document.createElement("div");
+    stars.className = "review-stars";
+    stars.textContent = "★".repeat(5);
+    stars.setAttribute("aria-label", "Avaliação: 5 de 5 estrelas");
+    const text = document.createElement("p");
+    text.textContent = review.text;
+    const author = document.createElement("footer");
+    const name = document.createElement("strong");
+    name.textContent = review.name;
+    const meta = document.createElement("span");
+    meta.textContent = review.meta ?? "";
+    author.append(name, meta);
+    card.append(stars, text, author);
+    reviewsGrid.append(card);
+  }
+} else {
+  document.querySelector("#reviews-empty").hidden = false;
+}
+
 document.querySelectorAll("[data-policy]").forEach((button) => {
   button.addEventListener("click", () => {
     const content = policies[button.dataset.policy];
