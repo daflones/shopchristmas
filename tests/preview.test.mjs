@@ -46,6 +46,29 @@ test("o app só chama as Edge Functions sc-* e não persiste dados", async () =>
   assert.ok(fetches.every((call) => call.includes("FUNCTIONS_URL")));
 });
 
+test("as avaliações cadastradas são reais, completas e com mídia acessível", async (t) => {
+  assert.ok(store.reviews.length >= 3, "esperadas avaliações cadastradas");
+  for (const review of store.reviews) {
+    assert.ok(review.name.length > 1, "nome do avaliador");
+    assert.ok(review.stars >= 1 && review.stars <= 5, "estrelas entre 1 e 5");
+    assert.ok(review.text.length > 20, "texto da avaliação");
+    assert.match(review.date, /^\d{2}\/\d{2}\/\d{4}$/, "data em pt-BR");
+    assert.doesNotMatch(review.text, /comprei? (mais )?(enfeite|decora|festa)|buy (more )?decorations/i, "texto não deve contradizer o kit decorado");
+  }
+  const server = createPreviewServer();
+  server.listen(0, "127.0.0.1");
+  await once(server, "listening");
+  t.after(() => new Promise((resolve, reject) => server.close((error) => error ? reject(error) : resolve())));
+  const origin = `http://127.0.0.1:${server.address().port}`;
+  const media = store.reviews.flatMap((review) => [review.avatar, review.video, ...(review.images ?? [])].filter(Boolean));
+  assert.ok(media.length >= 6, "esperadas fotos e vídeos das avaliações");
+  for (const path of media) {
+    const response = await fetch(origin + path);
+    assert.equal(response.status, 200, `mídia ausente: ${path}`);
+    await response.arrayBuffer();
+  }
+});
+
 test("o servidor só entrega arquivos públicos e rejeita escritas", async (t) => {
   const server = createPreviewServer();
   server.listen(0, "127.0.0.1");

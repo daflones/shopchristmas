@@ -69,9 +69,9 @@
       </section>
       <section class="kit-section container section-space" id="kit" aria-labelledby="kit-title">
         <div class="kit-art">
-          <img src="/assets/trees.webp" alt="Detalhe ilustrativo do kit natalino decorado." width="680" height="988" loading="lazy">
+          <img src="/assets/produto-montagem.webp" alt="Foto real da árvore de Natal de 1,80 m montada e decorada." loading="lazy">
           <div class="art-overlay"><span class="eyebrow">UM KIT. INFINITAS MEMÓRIAS.</span><p>A magia está<br>nos detalhes.</p></div>
-          <span class="art-caption">Arte ilustrativa</span>
+          <span class="art-caption">Foto real do produto</span>
         </div>
         <div class="kit-copy">
           <p class="eyebrow">UM NATAL COMPLETO</p>
@@ -117,7 +117,7 @@
       </section>
     </main>
     <section class="reviews-section container" aria-labelledby="reviews-title">
-      <div class="section-heading"><p class="eyebrow">QUEM COMPROU</p><h2 id="reviews-title">Avaliações dos clientes</h2></div>
+      <div class="section-heading"><p class="eyebrow">QUEM COMPROU</p><h2 id="reviews-title">Avaliações reais dos clientes</h2><p id="reviews-rating" class="reviews-rating" hidden><strong></strong><span class="rating-star" aria-hidden="true">★</span><span></span></p></div>
       <div class="reviews-grid" id="reviews-grid"></div>
       <p class="reviews-empty" id="reviews-empty" hidden>As primeiras avaliações aparecem aqui assim que os clientes receberem seus kits.</p>
     </section>
@@ -159,6 +159,15 @@
       </div>
     </dialog>
     <dialog id="policy-dialog" aria-labelledby="policy-title"><div class="dialog-header"><span class="eyebrow">INFORMAÇÕES DA PRÉVIA</span><button class="close-button" data-close aria-label="Fechar informações">×</button></div><h2 id="policy-title"></h2><div id="policy-content"></div></dialog>
+    <dialog id="media-dialog" class="media-dialog" aria-label="Galeria de mídias da avaliação">
+      <div class="media-viewer">
+        <figure id="media-stage"></figure>
+        <button id="media-prev" class="media-arrow media-prev" type="button" aria-label="Mídia anterior">‹</button>
+        <button id="media-next" class="media-arrow media-next" type="button" aria-label="Próxima mídia">›</button>
+        <button class="close-button media-close" data-close aria-label="Fechar galeria">×</button>
+        <span id="media-counter" class="media-counter"></span>
+      </div>
+    </dialog>
     <noscript><div class="noscript-message">Habilite JavaScript para visualizar os preços e concluir a compra.</div></noscript>
   </body>
 </html>

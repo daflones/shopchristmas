@@ -71,25 +71,129 @@ const policies = {
   }
 };
 
-// ---------- avaliações (somente depoimentos reais cadastrados no catálogo) ----------
+// ---------- avaliações reais de clientes + galeria de mídias ----------
 const reviewsGrid = document.querySelector("#reviews-grid");
+const mediaDialog = document.querySelector("#media-dialog");
+const mediaStage = document.querySelector("#media-stage");
+const mediaCounter = document.querySelector("#media-counter");
+const mediaPrev = document.querySelector("#media-prev");
+const mediaNext = document.querySelector("#media-next");
+let galleryItems = [];
+let galleryIndex = 0;
+
+function renderGalleryItem() {
+  const item = galleryItems[galleryIndex];
+  const element = document.createElement(item.type === "video" ? "video" : "img");
+  element.src = item.src;
+  element.alt = item.alt;
+  if (item.type === "video") {
+    element.controls = true;
+    element.playsInline = true;
+    element.autoplay = true;
+  }
+  mediaStage.replaceChildren(element);
+  mediaCounter.textContent = `${galleryIndex + 1} / ${galleryItems.length}`;
+  const single = galleryItems.length < 2;
+  mediaPrev.hidden = single;
+  mediaNext.hidden = single;
+}
+
+function stepGallery(delta) {
+  galleryIndex = (galleryIndex + delta + galleryItems.length) % galleryItems.length;
+  renderGalleryItem();
+}
+
+function openGallery(items, index) {
+  galleryItems = items;
+  galleryIndex = index;
+  renderGalleryItem();
+  openDialog(mediaDialog);
+}
+
+mediaPrev.addEventListener("click", () => stepGallery(-1));
+mediaNext.addEventListener("click", () => stepGallery(1));
+mediaDialog.addEventListener("keydown", (event) => {
+  if (event.key === "ArrowLeft") stepGallery(-1);
+  if (event.key === "ArrowRight") stepGallery(1);
+});
+mediaDialog.addEventListener("close", () => mediaStage.replaceChildren());
+
 if (store.reviews.length) {
+  const total = store.reviews.length;
+  const average = store.reviews.reduce((sum, review) => sum + review.stars, 0) / total;
+  const ratingEl = document.querySelector("#reviews-rating");
+  if (ratingEl) {
+    ratingEl.hidden = false;
+    ratingEl.querySelector("strong").textContent = average.toLocaleString("pt-BR", { minimumFractionDigits: 1 });
+    ratingEl.querySelector("span:last-child").textContent = `${total} avaliações de clientes`;
+  }
   for (const review of store.reviews) {
     const card = document.createElement("article");
     card.className = "review-card";
     const stars = document.createElement("div");
     stars.className = "review-stars";
-    stars.textContent = "★".repeat(5);
-    stars.setAttribute("aria-label", "Avaliação: 5 de 5 estrelas");
+    stars.textContent = "★".repeat(review.stars) + "☆".repeat(Math.max(0, 5 - review.stars));
+    stars.setAttribute("aria-label", `Avaliação: ${review.stars} de 5 estrelas`);
     const text = document.createElement("p");
     text.textContent = review.text;
+    const media = document.createElement("div");
+    media.className = "review-media";
+    const gallery = [];
+    if (review.video) {
+      gallery.push({ type: "video", src: review.video, alt: `Vídeo da avaliação de ${review.name}` });
+      const thumb = document.createElement("button");
+      thumb.type = "button";
+      thumb.className = "media-thumb";
+      thumb.setAttribute("aria-label", `Ver vídeo de ${review.name}`);
+      const preview = document.createElement("video");
+      preview.src = review.video;
+      preview.muted = true;
+      preview.playsInline = true;
+      preview.preload = "metadata";
+      preview.setAttribute("aria-hidden", "true");
+      const badge = document.createElement("span");
+      badge.className = "play-badge";
+      badge.textContent = "▶";
+      badge.setAttribute("aria-hidden", "true");
+      thumb.append(preview, badge);
+      thumb.addEventListener("click", () => openGallery(gallery, 0));
+      media.append(thumb);
+    }
+    (review.images ?? []).forEach((src) => {
+      gallery.push({ type: "image", src, alt: `Foto da árvore enviada por ${review.name}` });
+      const thumb = document.createElement("button");
+      thumb.type = "button";
+      thumb.className = "media-thumb";
+      thumb.setAttribute("aria-label", `Ampliar foto de ${review.name}`);
+      const img = document.createElement("img");
+      img.src = src;
+      img.alt = "";
+      img.loading = "lazy";
+      thumb.append(img);
+      thumb.addEventListener("click", () => openGallery(gallery, gallery.length - 1));
+      media.append(thumb);
+    });
     const author = document.createElement("footer");
+    if (review.avatar) {
+      const avatar = document.createElement("img");
+      avatar.src = review.avatar;
+      avatar.alt = "";
+      avatar.width = 40;
+      avatar.height = 40;
+      avatar.loading = "lazy";
+      avatar.className = "review-avatar";
+      author.append(avatar);
+    }
+    const who = document.createElement("div");
     const name = document.createElement("strong");
     name.textContent = review.name;
     const meta = document.createElement("span");
     meta.textContent = review.meta ?? "";
-    author.append(name, meta);
-    card.append(stars, text, author);
+    who.append(name, meta);
+    author.append(who);
+    card.append(stars, text);
+    if (media.childElementCount) card.append(media);
+    card.append(author);
     reviewsGrid.append(card);
   }
 } else {

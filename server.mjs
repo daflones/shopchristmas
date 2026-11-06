@@ -13,7 +13,19 @@ const files = new Map([
   ["/pedido.mjs", ["pedido.mjs", "text/javascript; charset=utf-8"]],
   ["/assets/trees.webp", ["assets/trees.webp", "image/webp"]],
   ["/assets/campaign.webp", ["assets/campaign.webp", "image/webp"]],
-  ["/assets/pix-garantia.webp", ["assets/pix-garantia.webp", "image/webp"]]
+  ["/assets/pix-garantia.webp", ["assets/pix-garantia.webp", "image/webp"]],
+  ["/assets/produto-montagem.webp", ["assets/produto-montagem.webp", "image/webp"]],
+  ["/assets/produto-180.webp", ["assets/produto-180.webp", "image/webp"]],
+  ["/assets/reviews/carol-perfil.webp", ["assets/reviews/carol-perfil.webp", "image/webp"]],
+  ["/assets/reviews/carol.webp", ["assets/reviews/carol.webp", "image/webp"]],
+  ["/assets/reviews/carol.mp4", ["assets/reviews/carol.mp4", "video/mp4"]],
+  ["/assets/reviews/jurbero-perfil.webp", ["assets/reviews/jurbero-perfil.webp", "image/webp"]],
+  ["/assets/reviews/jurbero.webp", ["assets/reviews/jurbero.webp", "image/webp"]],
+  ["/assets/reviews/jurbero2.webp", ["assets/reviews/jurbero2.webp", "image/webp"]],
+  ["/assets/reviews/jurbero.mp4", ["assets/reviews/jurbero.mp4", "video/mp4"]],
+  ["/assets/reviews/laila-perfil.webp", ["assets/reviews/laila-perfil.webp", "image/webp"]],
+  ["/assets/reviews/laila.webp", ["assets/reviews/laila.webp", "image/webp"]],
+  ["/assets/reviews/laila.mp4", ["assets/reviews/laila.mp4", "video/mp4"]]
 ]);
 
 export function createPreviewServer() {
