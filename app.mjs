@@ -200,6 +200,37 @@ if (store.reviews.length) {
   document.querySelector("#reviews-empty").hidden = false;
 }
 
+// ---------- galeria de fotos reais do produto ----------
+const productGallery = [
+  { type: "image", src: "/assets/produto-main.webp", alt: "Árvore de Natal de 1,80 m com 650 galhos — foto real do produto." },
+  { type: "image", src: "/assets/produto-detalhes.webp", alt: "Detalhes da árvore: galhos flexíveis e fáceis de modelar, base metálica resistente." },
+  { type: "image", src: "/assets/produto-montagem.webp", alt: "Montagem em 4 passos: encaixe a base, monte as seções, abra os galhos e a árvore está pronta." }
+];
+const kitArtImg = document.querySelector("#kit-art-img");
+const kitThumbs = document.querySelector("#kit-thumbs");
+if (kitArtImg && kitThumbs) {
+  let activeIndex = 0;
+  productGallery.forEach((item, index) => {
+    const thumb = document.createElement("button");
+    thumb.type = "button";
+    thumb.className = "kit-thumb" + (index === 0 ? " is-active" : "");
+    thumb.setAttribute("aria-label", `Ver foto ${index + 1} do produto`);
+    const img = document.createElement("img");
+    img.src = item.src;
+    img.alt = "";
+    img.loading = "lazy";
+    thumb.append(img);
+    thumb.addEventListener("click", () => {
+      activeIndex = index;
+      kitArtImg.src = item.src;
+      kitArtImg.alt = item.alt;
+      kitThumbs.querySelectorAll(".kit-thumb").forEach((el, i) => el.classList.toggle("is-active", i === index));
+    });
+    kitThumbs.append(thumb);
+  });
+  document.querySelector("#kit-art-main").addEventListener("click", () => openGallery(productGallery, activeIndex));
+}
+
 document.querySelectorAll("[data-policy]").forEach((button) => {
   button.addEventListener("click", () => {
     const content = policies[button.dataset.policy];

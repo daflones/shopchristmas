@@ -16,6 +16,8 @@ const files = new Map([
   ["/assets/pix-garantia.webp", ["assets/pix-garantia.webp", "image/webp"]],
   ["/assets/produto-montagem.webp", ["assets/produto-montagem.webp", "image/webp"]],
   ["/assets/produto-180.webp", ["assets/produto-180.webp", "image/webp"]],
+  ["/assets/produto-main.webp", ["assets/produto-main.webp", "image/webp"]],
+  ["/assets/produto-detalhes.webp", ["assets/produto-detalhes.webp", "image/webp"]],
   ["/assets/reviews/carol-perfil.webp", ["assets/reviews/carol-perfil.webp", "image/webp"]],
   ["/assets/reviews/carol.webp", ["assets/reviews/carol.webp", "image/webp"]],
   ["/assets/reviews/carol.mp4", ["assets/reviews/carol.mp4", "video/mp4"]],
